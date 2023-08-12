@@ -1,0 +1,89 @@
+version: "3.1"
+
+entities:
+  - doctor_name
+  - date
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - provide_doctor_name
+  - provide_date
+  - check_doctor_availability
+
+forms:
+  doctor_name_form:
+    #ignored_intents: []
+    required_slots:
+      - doctor_name
+  doctor_date_form:
+    #ignored_intents: []
+    required_slots:
+      - date
+slots:
+  doctor_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: doctor_name_form
+            requested_slot: doctor_name
+
+      #- type: from_entity
+      #  entity: doctor_name
+  date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - entity: date
+        type: from_entity
+        conditions:
+          - active_loop: doctor_date_form
+            requested_slot: date
+      #- type: from_entity
+      #  entity: date
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_ask_doctor_name:
+    - text: "What is the doctor name?"
+
+  utter_ask_date:
+    - text: "What is the date?"
+
+  utter_submit:
+    - text: "Ok. Thanks!"
+
+  utter_slots_values:
+    - text: "Checking Dr.{doctor_name} on {date}!"
+
+actions:
+  - action_check_doctor_availability
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
