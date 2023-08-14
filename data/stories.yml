@@ -29,33 +29,14 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-#- story: check_doctor_availability
-#  steps:
-#    - intent: greet
-#    - action: utter_greet
-#    - intent: check_doctor_availability
-#    - action: doctor_name_form
-#    - active_loop: doctor_name_form
-#    - slot_was_set:
-#        - requested_slot: doctor_name
-#    - slot_was_set:
-#        - doctor_name: Dr.Smith
-#    - slot_was_set:
-#        - requested_slot: null
-#    #- action: utter_ask_doctor_name
-#    #- intent: provide_name
-#    - active_loop: null
-#    #- action: doctor_date_form
-#    #- active_loop: doctor_date_form
-#    #- slot_was_set:
-#    #    - requested_slot: date
-#    #- slot_was_set:
-#    #    - date: 12/05/2020
-#    #- slot_was_set:
-#    #    - requested_slot: null
-#    #- action: utter_ask_date
-#    #- intent: provide_date
-#    #- active_loop: null
-#    - action: utter_slots_values
-#    - action: action_check_doctor_availability
-#    - intent: affirm
+- story: check_doctor_availability
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: check_doctor_availability
+    - action: doctor_name_date_form
+    - active_loop: doctor_name_date_form
+    - active_loop: null
+    - action: utter_slots_values
+    - action: action_check_doctor_availability
+    - intent: affirm

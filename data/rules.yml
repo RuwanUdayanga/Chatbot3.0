@@ -15,14 +15,14 @@ rules:
 - rule: Activate form
   steps:
   - intent: check_doctor_availability
-  - action: doctor_name_form
-  - active_loop: doctor_name_form
+  - action: doctor_name_date_form
+  - active_loop: doctor_name_date_form
 
 - rule: Submit form
   condition:
-  - active_loop: doctor_name_form
+  - active_loop: doctor_name_date_form
   steps:
-  - action: doctor_name_form
+  - action: doctor_name_date_form
   - active_loop: null
   - slot_was_set:
     - requested_slot: null

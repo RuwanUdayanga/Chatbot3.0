@@ -72,7 +72,7 @@ class action_check_doctor_availability(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         doctor_name = tracker.get_slot("doctor_name")
-        day = "2023-08-14"
+        day = tracker.get_slot("date")
 
         # Connect to the SQLite database
         #conn = sqlite3.connect('db.sqlite3')
