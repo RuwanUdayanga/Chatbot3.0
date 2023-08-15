@@ -40,3 +40,10 @@ stories:
     - action: utter_slots_values
     - action: action_check_doctor_availability
     - intent: affirm
+
+- story: user asks for available doctors on a specific date
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: check_available_doctors_given_date
+    - action: action_get_doctors_available_onDate

@@ -3,6 +3,11 @@ version: "3.1"
 entities:
   - doctor_name
   - date
+  - time
+  - department
+  - symptom
+  - patient_relation
+  - facility
 
 intents:
   - greet
@@ -15,6 +20,9 @@ intents:
   - provide_doctor_name
   - provide_date
   - check_doctor_availability
+  - check_available_doctors_given_date
+  - check_available_dates_given_doctor
+  - check_available_doctors_given_speciality
 
 forms:
   doctor_name_date_form:
@@ -22,10 +30,7 @@ forms:
     required_slots:
       - doctor_name
       - date
-#  doctor_date_form:
-#    #ignored_intents: []
-#    required_slots:
-#      - date
+
 slots:
   doctor_name:
     type: text
@@ -35,6 +40,7 @@ slots:
         conditions:
           - active_loop: doctor_name_date_form
             requested_slot: doctor_name
+
   date:
     type: text
     influence_conversation: true
@@ -78,6 +84,7 @@ responses:
 
 actions:
   - action_check_doctor_availability
+  - action_get_doctors_available_onDate
 
 session_config:
   session_expiration_time: 60

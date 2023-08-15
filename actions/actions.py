@@ -62,6 +62,9 @@ from typing import Text, List, Dict, Any
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+from datetime import datetime
+from rasa_sdk.events import SlotSet
+
 class action_check_doctor_availability(Action):
     def name(self) -> Text:
         return "action_check_doctor_availability"
@@ -102,5 +105,45 @@ class action_check_doctor_availability(Action):
 
         # Send the response back to the user
         dispatcher.utter_message(text=message)
+
+        return []
+
+class action_get_doctors_available_onDate(Action):
+    def name(self) -> str:
+        return "action_get_doctors_available_onDate"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Get the date entity from the user's message
+        date_entity = next(tracker.get_latest_entity_values("date"), None)
+
+        if date_entity:
+            # Connect to the MySQL database
+            conn = mysql.connector.connect(
+                host='localhost',
+                user='root',
+                password='181522',
+                database='medibot'
+            )
+            cursor = conn.cursor()
+
+            # Execute the SQL query to get doctors available on the given date
+            query = "SELECT DISTINCT d.doctor_name FROM medibot_doctor d " \
+                    "INNER JOIN medibot_doctor_availability da ON d.doctor_id = da.doctor_id " \
+                    "WHERE da.day = %s AND da.available = 1"
+            cursor.execute(query, (date_entity,))
+
+            # Fetch all the doctor names
+            doctor_names = [row[0] for row in cursor.fetchall()]
+
+            # Close the database connection
+            cursor.close()
+            conn.close()
+
+            if doctor_names:
+                dispatcher.utter_message(f"Doctors available on {date_entity}: {', '.join(doctor_names)}")
+            else:
+                dispatcher.utter_message(f"No doctors available on {date_entity}")
+        else:
+            dispatcher.utter_message("I couldn't understand the date. Please provide a valid date.")
 
         return []
