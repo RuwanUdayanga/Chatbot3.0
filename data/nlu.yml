@@ -111,25 +111,26 @@ nlu:
 
 - intent: check_available_dates_given_doctor
   examples: |
-    - When is [doctor_name] available next?
-    - Can you tell me the upcoming availability of [doctor_name]?
-    - I'd like to know when I can see [doctor_name].
-    - What are the available dates for [doctor_name]?
-    - When can I book an appointment with [doctor_name]?
-    - Show me the upcoming schedule for [doctor_name].
-    - Tell me the next available dates for [doctor_name].
-    - I want to schedule a visit with [doctor_name]. When is he/she free?
+    - When is [Dr.Kamal](doctor_name) available next?
+    - Can you tell me the upcoming availability of [Dr.Nimal](doctor_name)?
+    - I'd like to know when I can see [Dr.Smith](doctor_name).
+    - What are the available dates for [Dr.Johnson](doctor_name)?
+    - When can I book an appointment with [Dr.Saman Perera](doctor_name)?
+    - Show me the upcoming schedule for [Dr.Amal Shantha](doctor_name).
+    - Tell me the next available dates for [Dr.Athukorala](doctor_name).
+    - I want to schedule a visit with [Dr.Arun Chamara](doctor_name). When is he free?
 
 - intent: check_available_doctors_given_speciality
   examples: |
-    - Can you recommend available doctors specializing in [speciality]?
-    - I'm looking for [speciality] doctors who are available.
-    - Show me doctors with availability in the [speciality] field.
-    - Which doctors specializing in [speciality] can I see?
-    - Tell me about available doctors in the [speciality] category.
-    - Are there any [speciality] doctors with open slots?
-    - Who are the available doctors for [speciality] treatment?
-    - I need to find [speciality] doctors available for an appointment.
+    - Can you recommend available doctors specializing in [Dermatology](speciality)?
+    - I'm looking for [Pediatrician](speciality) doctors who are available.
+    - Show me doctors with availability in the [Neurologist][speciality] field.
+    - Which doctors specializing in [Pathologist](speciality) can I see?
+    - Tell me about available doctors in the [Gastroenterologist](speciality) category.
+    - Are there any [Oncologist](speciality) doctors with open slots?
+    - Who are the available doctors for [Rheumatology](speciality) treatment?
+    - I need to find [Cardiologist](speciality) doctors available for an appointment.
+    -Who are the [ENT](speciality) specialists available?
 
 - intent: provide_doctor_name
   examples: |

@@ -147,3 +147,80 @@ class action_get_doctors_available_onDate(Action):
             dispatcher.utter_message("I couldn't understand the date. Please provide a valid date.")
 
         return []
+
+
+class action_get_dates_available_given_Name(Action):
+    def name(self) -> Text:
+        return "action_get_dates_available_given_Name"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Get the doctor's name entity from the user's message
+        name_entity = next(tracker.get_latest_entity_values("doctor_name"), None)
+
+        if name_entity:
+            try:
+                # Connect to the MySQL database
+                with mysql.connector.connect(
+                        host='localhost',
+                        user='root',
+                        password='181522',
+                        database='medibot'
+                ) as conn:
+                    with conn.cursor() as cursor:
+                        # Execute the SQL query to get available dates for the given doctor
+                        query = "SELECT DISTINCT d.day FROM medibot_doctor_availability d " \
+                                "INNER JOIN medibot_doctor da ON d.doctor_id = da.doctor_id " \
+                                "WHERE da.doctor_name = %s AND d.available = 1"
+
+                        cursor.execute(query, (name_entity,))
+
+                        # Fetch all the available dates
+                        #dates = [row[0] for row in cursor.fetchall()]
+                        dates = [row[0].strftime("%Y-%m-%d") for row in cursor.fetchall()]
+
+                if dates:
+                    dispatcher.utter_message(f"{name_entity} available on: {', '.join(dates)}")
+                else:
+                    dispatcher.utter_message(f"{name_entity} not available.")
+            except mysql.connector.Error as err:
+                print("Error:", err)
+                dispatcher.utter_message("An error occurred while fetching data.")
+        else:
+            dispatcher.utter_message("I couldn't understand the name. Please provide a valid name.")
+
+        return []
+
+class action_check_available_doctors_given_speciality(Action):
+        def name(self) -> Text:
+            return "action_check_available_doctors_given_speciality"
+
+        def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[
+            Dict[Text, Any]]:
+            speciality = next(tracker.get_latest_entity_values("speciality"), None)
+            try:
+                # Connect to the MySQL database
+                with mysql.connector.connect(
+                        host='localhost',
+                        user='root',
+                        password='181522',
+                        database='medibot'
+                ) as conn:
+                    with conn.cursor() as cursor:
+                        # Execute the SQL query to get available specialties
+                        query = "SELECT DISTINCT doctor_name FROM medibot_doctor WHERE speciality=%s"
+                        cursor.execute(query,(speciality,))
+
+                        # Fetch all the available specialties
+                        specialties = [row[0] for row in cursor.fetchall()]
+
+                if specialties:
+                    response = "The available specialties are: {}".format(", ".join(specialties))
+                else:
+                    response = "No specialties found in the database."
+
+                dispatcher.utter_message(response)
+            except mysql.connector.Error as err:
+                print("Error:", err)
+                dispatcher.utter_message("An error occurred while fetching data.")
+
+            return []

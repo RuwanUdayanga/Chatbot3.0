@@ -6,6 +6,7 @@ entities:
   - time
   - department
   - symptom
+  - speciality
   - patient_relation
   - facility
 
@@ -85,6 +86,8 @@ responses:
 actions:
   - action_check_doctor_availability
   - action_get_doctors_available_onDate
+  - action_get_dates_available_given_Name
+  - action_check_available_doctors_given_speciality
 
 session_config:
   session_expiration_time: 60

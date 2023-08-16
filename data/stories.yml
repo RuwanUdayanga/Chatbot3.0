@@ -47,3 +47,18 @@ stories:
     - action: utter_greet
     - intent: check_available_doctors_given_date
     - action: action_get_doctors_available_onDate
+
+- story: user asks for available dates given doctor name
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: check_available_dates_given_doctor
+    - action: action_get_dates_available_given_Name
+
+- story: User wants to check available doctors in a specific specialty
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: check_available_doctors_given_speciality
+  - action: action_check_available_doctors_given_speciality
+

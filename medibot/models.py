@@ -4,9 +4,10 @@ from django.db import models
 class Doctor(models.Model):
     doctor_id = models.CharField(max_length=10, primary_key=True)
     doctor_name = models.CharField(max_length=100)
-    id = None
+    speciality = models.CharField(max_length=50)
 
 class Doctor_availability(models.Model):
+    id = models.AutoField(primary_key=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     day = models.DateField()
     available = models.BooleanField()
