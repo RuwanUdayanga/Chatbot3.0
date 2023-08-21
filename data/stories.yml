@@ -62,3 +62,20 @@ stories:
   - intent: check_available_doctors_given_speciality
   - action: action_check_available_doctors_given_speciality
 
+- story: user asks about hospital location
+  steps:
+    - intent: asking_hospital_location
+    - action: utter_hospital_location
+
+- story: booking_process
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: add_booking_initial
+    - action: doctor_name_date_form
+    - active_loop: doctor_name_date_form
+    - active_loop: null
+    - action: utter_slots_values
+    - action: action_check_doctor_availability
+    - intent: confirm_booking
+    - action: action_book_doctor

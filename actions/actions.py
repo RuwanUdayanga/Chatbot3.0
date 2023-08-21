@@ -77,10 +77,6 @@ class action_check_doctor_availability(Action):
         doctor_name = tracker.get_slot("doctor_name")
         day = tracker.get_slot("date")
 
-        # Connect to the SQLite database
-        #conn = sqlite3.connect('db.sqlite3')
-        #cursor = conn.cursor()
-
         # Connect to the MySQL database
         conn = mysql.connector.connect(
              host='localhost',
@@ -99,7 +95,7 @@ class action_check_doctor_availability(Action):
         conn.close()
 
         if result and result[0] == 1:
-            message = f"{doctor_name} is available on {day}."
+            message = f"{doctor_name} is available on {day}. Do you want to make a booking? type 'Yes I confirm booking' to book"
         else:
             message = f"{doctor_name} is not available on {day}."
 
@@ -224,3 +220,51 @@ class action_check_available_doctors_given_speciality(Action):
                 dispatcher.utter_message("An error occurred while fetching data.")
 
             return []
+
+class action_book_doctor(Action):
+    def name(self) -> Text:
+        return "action_book_doctor"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        doctor_name = next(tracker.get_latest_entity_values("doctor_name"), None)
+        date = next(tracker.get_latest_entity_values("date"), None)
+        doctor_name = tracker.get_slot("doctor_name")
+        date = tracker.get_slot("date")
+        confirm = next(tracker.get_latest_entity_values("confirm"), None)
+        print(doctor_name,date,confirm)
+        if confirm == "confirm":
+            try:
+                # Connect to the MySQL database
+                with mysql.connector.connect(
+                        host='localhost',
+                        user='root',
+                        password='181522',
+                        database='medibot'
+                ) as conn:
+                    cursor = conn.cursor()
+
+                    # Execute the SQL query to get doctor's ID
+                    query1 = "SELECT doctor_id FROM medibot_doctor WHERE doctor_name = %s"
+                    cursor.execute(query1, (doctor_name,))
+                    id_result = cursor.fetchone()
+
+                    if id_result:
+                        doctor_id = id_result[0]
+
+                        # Execute the SQL query to book the doctor
+                        query = "INSERT INTO medibot_bookings (day, book, doctor_id) VALUES (%s, %s, %s)"
+                        cursor.execute(query, (date, 1, doctor_id))
+
+                        conn.commit()  # Commit the transaction
+
+                        message = f"Booking {doctor_name} on {date}. Booking successful!"
+                        dispatcher.utter_message(message)
+                    else:
+                        response = f"{doctor_name} is not available."
+                        dispatcher.utter_message(response)
+
+            except mysql.connector.Error as err:
+                print("Error:", err)
+                dispatcher.utter_message("An error occurred while fetching data.")
+
+        return []

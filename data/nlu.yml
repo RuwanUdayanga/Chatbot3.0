@@ -92,12 +92,16 @@ nlu:
 
 - intent: check_doctor_availability
   examples: |
-    - I need to book a doctor.
-    - Can you help me to find a doctor.
-    - I need to book a doctor.
-    - I need to see a doctor. Can you provide me with options?
-    - I require medical assistance. How can I check doctor availability?
-    - Can you guide me through the process of finding an available doctor?
+    - Can you help me find an available doctor?
+    - I'm looking to see if there are any doctors available.
+    - Can you assist me in checking doctor availability?
+    - How can I find out if there are any doctors open for appointments?
+    - Is it possible to know if there are doctors I can see right now?
+    - I need to know if there are any doctors with open slots.
+    - Are there any available doctors for consultation?
+    - Can you provide me with information about doctors who are available?
+    - I want to book a doctor's appointment. Who's available?
+    - Tell me which doctors have appointments available.
 
 - intent: check_available_doctors_given_date
   examples: |
@@ -131,6 +135,32 @@ nlu:
     - Who are the available doctors for [Rheumatology](speciality) treatment?
     - I need to find [Cardiologist](speciality) doctors available for an appointment.
     -Who are the [ENT](speciality) specialists available?
+
+- intent: asking_hospital_location
+  examples: |
+    - Where is the hospital located?
+    - Can you tell me the address of the hospital?
+    - What's the location of the hospital?
+    - Where can I find the hospital?
+
+- intent: add_booking_initial
+  examples: |
+    - I need to book a doctor.
+    - Can you help me to find a doctor.
+    - I need to book a doctor.
+    - I need to see a doctor. Can you provide me with options?
+    - I require medical assistance. How can I check doctor availability?
+    - Can you guide me through the process of finding an available doctor?
+    - How can I book an appointment with a doctor?
+    - I want to schedule a visit. How do I do that?
+    - Can you guide me through the process of booking an appointment?
+    - How do I reserve a time to see a doctor?
+    - What's the procedure for booking appointments?
+
+- intent: confirm_booking
+  examples: |
+    - Yes I [confirm](confirm) booking.
+    - [Confirm](confirm) booking.
 
 - intent: provide_doctor_name
   examples: |

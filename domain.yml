@@ -9,6 +9,8 @@ entities:
   - speciality
   - patient_relation
   - facility
+  - confirm
+  - doctor_available
 
 intents:
   - greet
@@ -21,9 +23,12 @@ intents:
   - provide_doctor_name
   - provide_date
   - check_doctor_availability
+  - asking_hospital_location
   - check_available_doctors_given_date
   - check_available_dates_given_doctor
   - check_available_doctors_given_speciality
+  - add_booking_initial
+  - confirm_booking
 
 forms:
   doctor_name_date_form:
@@ -31,6 +36,9 @@ forms:
     required_slots:
       - doctor_name
       - date
+  doctor_booking_confirm_form:
+    required_slots:
+      - confirm
 
 slots:
   doctor_name:
@@ -50,6 +58,15 @@ slots:
         conditions:
           - active_loop: doctor_name_date_form
             requested_slot: date
+
+  confirm:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: doctor_booking_confirm_form
+            requested_slot: confirm
 
 responses:
   utter_greet:
@@ -83,11 +100,16 @@ responses:
   utter_slots_values:
     - text: "Checking {doctor_name} on {date}!"
 
+  utter_hospital_location:
+    - text: "MediCare Hospitals PLC, Colombo 7, Sri Lanka"
+
+
 actions:
   - action_check_doctor_availability
   - action_get_doctors_available_onDate
   - action_get_dates_available_given_Name
   - action_check_available_doctors_given_speciality
+  - action_book_doctor
 
 session_config:
   session_expiration_time: 60

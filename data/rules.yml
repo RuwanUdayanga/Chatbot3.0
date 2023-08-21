@@ -28,3 +28,8 @@ rules:
     - requested_slot: null
   - action: utter_slots_values
   - action: action_check_doctor_availability
+
+- rule: Book_doctor
+  steps:
+    - intent: confirm_booking
+    - action: action_book_doctor
