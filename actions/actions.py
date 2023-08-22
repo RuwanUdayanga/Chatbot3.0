@@ -268,3 +268,56 @@ class action_book_doctor(Action):
                 dispatcher.utter_message("An error occurred while fetching data.")
 
         return []
+class action_cancel_appointment(Action):
+    def name(self) -> Text:
+        return "action_cancel_appointment"
+
+    def fetch_appointment_info(self, cursor, appointment_ID):
+        query = """
+            SELECT
+                d.doctor_name,
+                b.day
+            FROM
+                medibot_bookings AS b
+            JOIN
+                medibot_doctor AS d ON b.doctor_id = d.doctor_id
+            WHERE
+                b.appointment_ID = %s
+        """
+        cursor.execute(query, (appointment_ID,))
+        return cursor.fetchone()
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        confirm = next(tracker.get_latest_entity_values("confirm_cancellation"), None)
+
+        if confirm == "confirm":
+            appointment_ID = tracker.get_slot("appointment_ID")
+            try:
+                with mysql.connector.connect(
+                        host='localhost',
+                        user='root',
+                        password='181522',
+                        database='medibot'
+                ) as conn:
+                    cursor = conn.cursor()
+
+                    appointment_info = self.fetch_appointment_info(cursor, appointment_ID)
+
+                    if appointment_info:
+                        doctor_name, date = appointment_info
+
+                        query = "UPDATE medibot_bookings SET book = 0 WHERE appointment_ID = %s"
+                        cursor.execute(query, (appointment_ID,))
+                        conn.commit()
+
+                        message = f"Cancelling appointment with {doctor_name} on {date}. Appointment cancelled!"
+                        dispatcher.utter_message(message)
+                    else:
+                        response = "Appointment not available."
+                        dispatcher.utter_message(response)
+
+            except mysql.connector.Error as err:
+                print("Error:", err)
+                dispatcher.utter_message("An error occurred while fetching data.")
+
+        return []

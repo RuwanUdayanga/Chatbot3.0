@@ -13,7 +13,7 @@ class Doctor_availability(models.Model):
     available = models.BooleanField()
 
 class Bookings(models.Model):
-    id = models.AutoField(primary_key=True)
+    appointment_ID = models.AutoField(primary_key=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     day = models.DateField()
     book = models.BooleanField()

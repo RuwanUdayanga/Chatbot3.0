@@ -79,3 +79,40 @@ stories:
     - action: action_check_doctor_availability
     - intent: confirm_booking
     - action: action_book_doctor
+
+- story: cancel_appointment
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: cancel_appointment
+    - action: utter_ask_appointment_details
+    - action: appointment_ID_form
+    - active_loop: appointment_ID_form
+    - active_loop: null
+    - action: utter_cancellation
+    - intent: confirm_appointment_cancellation
+    - action: action_cancel_appointment
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: cancel_appointment
+  - action: utter_ask_appointment_details
+  - action: appointment_ID_form
+  - active_loop: appointment_ID_form
+  - slot_was_set:
+    - requested_slot: appointment_ID
+  - intent: give_appointment_ID
+    entities:
+    - appointment_ID: '3'
+  - slot_was_set:
+    - appointment_ID: '3'
+  - action: appointment_ID_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_cancellation
+  - intent: confirm_appointment_cancellation
+    entities:
+    - confirm_cancellation: confirm
+  - action: action_cancel_appointment
