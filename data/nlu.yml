@@ -144,8 +144,9 @@ nlu:
     - What's the procedure for booking appointments?
 - intent: confirm_booking
   examples: |
-    - Yes I [confirm](confirm) booking.
-    - [Confirm](confirm) booking.
+    - Yes I [confirm booking](confirm).
+    - [Confirm booking](confirm).
+    - Yes I [confirm booking](confirm) booking
 - intent: cancel_appointment
   examples: |
     - I need to cancel my appointment.
@@ -164,6 +165,19 @@ nlu:
     - [3](appointment_ID)
 - intent: confirm_appointment_cancellation
   examples: |
-    - Yes I [confirm](confirm_cancellation) appointment cancellation.
-    - [Confirm](confirm_cancellation) appointment cancellation.
-    - Yes I [confirm](confirm_cancellation) appointment cancellation
+    - Yes I confirm appointment [cancellation](confirm_cancellation).
+    - Confirm appointment [cancellation](confirm_cancellation).
+    - Yes I confirm appointment [cancellation](confirm_cancellation)
+
+- intent: provide_doctor_name
+  examples: |
+    - Dr.Johnson
+    - Dr.Smith
+    - Peter
+    - Ann
+- intent: provide_date
+  examples: |
+    - 2021-01-05
+    - 2022-4-06
+    - 2023-12-4
+    - 2019-3-31

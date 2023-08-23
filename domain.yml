@@ -98,16 +98,22 @@ responses:
   - text: Can you tell me the appointment ID?
   utter_cancellation:
   - text: "Do you really want cancel booking ID={appointment_ID} ! If yes type 'Yes I confirm appointment cancellation' "
+  utter_ask_doctor_name:
+  - text: What is the doctor name?
+  utter_ask_date:
+  - text: What is the date?
+  utter_submit:
+  - text: Ok. Thanks!
 actions:
-- utter_cancellation
-- action_cancel_appointment
-- utter_ask_appointment_details
-- utter_greet
-- action_check_doctor_availability
-- action_get_doctors_available_onDate
-- action_get_dates_available_given_Name
-- action_check_available_doctors_given_speciality
-- action_book_doctor
+  - utter_cancellation
+  - action_cancel_appointment
+  - utter_ask_appointment_details
+  - utter_greet
+  - action_check_doctor_availability
+  - action_get_doctors_available_onDate
+  - action_get_dates_available_given_Name
+  - action_check_available_doctors_given_speciality
+  - action_book_doctor
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

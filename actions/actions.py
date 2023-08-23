@@ -232,7 +232,7 @@ class action_book_doctor(Action):
         date = tracker.get_slot("date")
         confirm = next(tracker.get_latest_entity_values("confirm"), None)
         print(doctor_name,date,confirm)
-        if confirm == "confirm":
+        if confirm == "confirm booking":
             try:
                 # Connect to the MySQL database
                 with mysql.connector.connect(
@@ -290,7 +290,7 @@ class action_cancel_appointment(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         confirm = next(tracker.get_latest_entity_values("confirm_cancellation"), None)
 
-        if confirm == "confirm":
+        if confirm == "cancellation":
             appointment_ID = tracker.get_slot("appointment_ID")
             try:
                 with mysql.connector.connect(
