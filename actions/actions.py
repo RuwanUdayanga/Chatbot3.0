@@ -231,7 +231,7 @@ class action_book_doctor(Action):
         doctor_name = tracker.get_slot("doctor_name")
         date = tracker.get_slot("date")
         confirm = next(tracker.get_latest_entity_values("confirm"), None)
-        print(doctor_name,date,confirm)
+
         if confirm == "confirm booking":
             try:
                 # Connect to the MySQL database
