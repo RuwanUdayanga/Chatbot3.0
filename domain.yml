@@ -32,6 +32,7 @@ intents:
 - mood_unhappy
 - provide_date
 - provide_doctor_name
+
 forms:
   doctor_name_date_form:
     required_slots:
@@ -78,7 +79,7 @@ slots:
         requested_slot: appointment_ID
 responses:
   utter_greet:
-  - text: Hey! How are you?
+  - text: Hello! how can I help you?
   utter_cheer_up:
   - text: 'Here is something to cheer you up:'
     image: https://i.imgur.com/nGF1K8f.jpg
@@ -104,6 +105,7 @@ responses:
   - text: What is the date?
   utter_submit:
   - text: Ok. Thanks!
+
 actions:
   - utter_cancellation
   - action_cancel_appointment
@@ -114,6 +116,7 @@ actions:
   - action_get_dates_available_given_Name
   - action_check_available_doctors_given_speciality
   - action_book_doctor
+  - utter_list_hospital_services
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
