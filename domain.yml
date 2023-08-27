@@ -1,0 +1,122 @@
+version: '3.1'
+entities:
+- appointment_ID
+- confirm_cancellation
+- doctor_name
+- date
+- time
+- department
+- symptom
+- speciality
+- patient_relation
+- facility
+- confirm
+- doctor_available
+intents:
+- add_booking_initial
+- affirm
+- asking_hospital_location
+- bot_challenge
+- cancel_appointment
+- check_available_dates_given_doctor
+- check_available_doctors_given_date
+- check_available_doctors_given_speciality
+- check_doctor_availability
+- confirm_appointment_cancellation
+- confirm_booking
+- deny
+- give_appointment_ID
+- goodbye
+- greet
+- mood_great
+- mood_unhappy
+- provide_date
+- provide_doctor_name
+
+forms:
+  doctor_name_date_form:
+    required_slots:
+    - doctor_name
+    - date
+  doctor_booking_confirm_form:
+    required_slots:
+    - confirm
+  appointment_ID_form:
+    required_slots:
+    - appointment_ID
+slots:
+  doctor_name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: doctor_name_date_form
+        requested_slot: doctor_name
+  date:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: doctor_name_date_form
+        requested_slot: date
+  confirm:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: doctor_booking_confirm_form
+        requested_slot: confirm
+  appointment_ID:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: appointment_ID_form
+        requested_slot: appointment_ID
+responses:
+  utter_greet:
+  - text: Hello! how can I help you?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_slots_values:
+  - text: Checking {doctor_name} on {date}!
+  utter_hospital_location:
+  - text: MediCare Hospitals PLC, Colombo 7, Sri Lanka
+  utter_ask_appointment_details:
+  - text: Can you tell me the appointment ID?
+  utter_cancellation:
+  - text: "Do you really want cancel booking ID={appointment_ID} ! If yes type 'Yes I confirm appointment cancellation' "
+  utter_ask_doctor_name:
+  - text: What is the doctor name?
+  utter_ask_date:
+  - text: What is the date?
+  utter_submit:
+  - text: Ok. Thanks!
+
+actions:
+  - utter_cancellation
+  - action_cancel_appointment
+  - utter_ask_appointment_details
+  - utter_greet
+  - action_check_doctor_availability
+  - action_get_doctors_available_onDate
+  - action_get_dates_available_given_Name
+  - action_check_available_doctors_given_speciality
+  - action_book_doctor
+  - utter_list_hospital_services
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

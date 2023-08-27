@@ -1,0 +1,61 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Activate form
+  steps:
+  - intent: check_doctor_availability
+  - action: doctor_name_date_form
+  - active_loop: doctor_name_date_form
+
+- rule: Submit form
+  condition:
+  - active_loop: doctor_name_date_form
+  steps:
+  - action: doctor_name_date_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_slots_values
+  - action: action_check_doctor_availability
+
+- rule: Book_doctor
+  steps:
+    - intent: confirm_booking
+    - action: action_book_doctor
+
+- rule: Submit form
+  condition:
+  - active_loop: doctor_name_date_form
+  steps:
+  - action: doctor_name_date_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_slots_values
+  - action: action_check_doctor_availability
+
+- rule: cancel_form
+  condition:
+    - active_loop: appointment_ID_form
+  steps:
+    - action: appointment_ID_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_cancellation
+
+- rule: cqncel_appointment
+  steps:
+    - intent: confirm_appointment_cancellation
+    - action: action_cancel_appointment
