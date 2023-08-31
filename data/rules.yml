@@ -26,7 +26,7 @@ rules:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - action: utter_slots_values
+  #- action: utter_slots_values
   - action: action_check_doctor_availability
 
 - rule: Book_doctor
@@ -34,16 +34,16 @@ rules:
     - intent: confirm_booking
     - action: action_book_doctor
 
-- rule: Submit form
-  condition:
-  - active_loop: doctor_name_date_form
-  steps:
-  - action: doctor_name_date_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - action: utter_slots_values
-  - action: action_check_doctor_availability
+#- rule: Submit form
+#  condition:
+#  - active_loop: doctor_name_date_form
+#  steps:
+#  - action: doctor_name_date_form
+#  - active_loop: null
+#  - slot_was_set:
+#    - requested_slot: null
+#  #- action: utter_slots_values
+#  - action: action_check_doctor_availability
 
 - rule: cancel_form
   condition:
@@ -59,3 +59,8 @@ rules:
   steps:
     - intent: confirm_appointment_cancellation
     - action: action_cancel_appointment
+
+- rule: restart_chat
+  steps:
+    - intent: restart_chat
+    - action: action_restart

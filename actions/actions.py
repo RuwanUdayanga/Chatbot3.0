@@ -11,20 +11,7 @@
 #
 # from rasa_sdk import Action, Tracker
 # from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
+
 # import mysql.connector
 #
 # conn = mysql.connector.connect(
@@ -61,10 +48,21 @@ import mysql.connector
 from typing import Text, List, Dict, Any
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-
+from rasa_sdk.events import Restarted
 from datetime import datetime
 from rasa_sdk.events import SlotSet
 
+class ActionWelcome(Action):
+    def name(self) -> Text:
+        return "action_welcome"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(text="Hello! how can I help you? ")
+
+        return []
 class action_check_doctor_availability(Action):
     def name(self) -> Text:
         return "action_check_doctor_availability"
@@ -95,7 +93,7 @@ class action_check_doctor_availability(Action):
         conn.close()
 
         if result and result[0] == 1:
-            message = f"{doctor_name} is available on {day}. Do you want to make a booking? type 'Yes I confirm booking' to book"
+            message = f"{doctor_name} is available on {day}. Do you want to make a booking? If yes type 'Yes I confirm the booking'."
         else:
             message = f"{doctor_name} is not available on {day}."
 
@@ -232,7 +230,7 @@ class action_book_doctor(Action):
         date = tracker.get_slot("date")
         confirm = next(tracker.get_latest_entity_values("confirm"), None)
 
-        if confirm == "confirm booking":
+        if confirm == "confirm the booking":
             try:
                 # Connect to the MySQL database
                 with mysql.connector.connect(
@@ -257,7 +255,8 @@ class action_book_doctor(Action):
 
                         conn.commit()  # Commit the transaction
 
-                        message = f"Booking {doctor_name} on {date}. Booking successful!"
+                        message = (f"Booking {doctor_name} on {date}. Booking successful! \n Do you need any other service? "
+                                   f"")
                         dispatcher.utter_message(message)
                     else:
                         response = f"{doctor_name} is not available."
@@ -321,3 +320,16 @@ class action_cancel_appointment(Action):
                 dispatcher.utter_message("An error occurred while fetching data.")
 
         return []
+class  ActionRestart(Action):
+
+  def name(self) -> Text:
+      return "action_restart"
+
+  async def run(
+      self, dispatcher, tracker: Tracker, domain: Dict[Text, Any]
+  ) -> List[Dict[Text, Any]]:
+
+      # custom behavior
+      response = "Hi! how can I help you?"
+      dispatcher.utter_message(response)
+      return [Restarted()]

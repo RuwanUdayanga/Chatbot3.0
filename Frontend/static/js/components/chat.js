@@ -1,6 +1,7 @@
 /**
  * scroll to the bottom of the chats after new message has been added to chat
  */
+
 const converter = new showdown.Converter();
 function scrollToBottomOfResults() {
   const terminalResultsDiv = document.getElementById("chats");
@@ -27,7 +28,7 @@ function setUserResponse(message) {
  *
  */
 function getBotResponse(text) {
-  botResponse = `<img class="botAvatar" src="./static/img/sara_avatar.png"/><span class="botMsg">${text}</span><div class="clearfix"></div>`;
+  botResponse = `<img class="botAvatar" src="./static/img/bot.png"/><span class="botMsg">${text}</span><div class="clearfix"></div>`;
   return botResponse;
 }
 
@@ -38,23 +39,26 @@ function getBotResponse(text) {
  * for more info: `https://rasa.com/docs/rasa/connectors/your-own-website#request-and-response-format`
  */
 function setBotResponse(response) {
-  // renders bot response after 500 milliseconds
+  // renders bot response after 100 milliseconds
   setTimeout(() => {
     hideBotTyping();
     if (response.length < 1) {
       // if there is no response from Rasa, send  fallback message to the user
-      const fallbackMsg = "I am facing some issues, please try again later!!!";
+      const fallbackMsg = "Please try again later!!!";
 
-      const BotResponse = `<img class="botAvatar" src="./static/img/sara_avatar.png"/><p class="botMsg">${fallbackMsg}</p><div class="clearfix"></div>`;
+      const BotResponse = `<img class="botAvatar" src="./static/img/bot.png"/><p class="botMsg">${fallbackMsg}</p><div class="clearfix"></div>`;
 
       $(BotResponse).appendTo(".chats").hide().fadeIn(1000);
       scrollToBottomOfResults();
     } else {
       // if we get response from Rasa
+      //console.log(response)
       for (let i = 0; i < response.length; i += 1) {
         // check if the response contains "text"
         if (Object.hasOwnProperty.call(response[i], "text")) {
+          //console.log(response[i])
           if (response[i].text != null) {
+
             // convert the text to mardown format using showdown.js(https://github.com/showdownjs/showdown);
             let botResponse;
             let html = converter.makeHtml(response[i].text);
@@ -92,7 +96,7 @@ function setBotResponse(response) {
             } else {
               // if no markdown formatting found, render the text as it is.
               if (!botResponse) {
-                botResponse = `<img class="botAvatar" src="./static/img/sara_avatar.png"/><p class="botMsg">${response[i].text}</p><div class="clearfix"></div>`;
+                botResponse = `<img class="botAvatar" src="./static/img/bot.png"/><p class="botMsg">${response[i].text}</p><div class="clearfix"></div>`;
               }
             }
             // append the bot response on to the chat screen
@@ -218,7 +222,7 @@ function setBotResponse(response) {
       scrollToBottomOfResults();
     }
     $(".usrInput").focus();
-  }, 500);
+  }, 100);
 }
 
 /**
@@ -240,7 +244,7 @@ async function send(message) {
         $("#userInput").prop("disabled", false);
 
         // if you want the bot to start the conversation after restart
-        // customActionTrigger();
+        customActionTrigger();
         return;
       }
       setBotResponse(botResponse);

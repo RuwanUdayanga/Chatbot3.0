@@ -32,7 +32,7 @@ intents:
 - mood_unhappy
 - provide_date
 - provide_doctor_name
-
+- restart_chat
 forms:
   doctor_name_date_form:
     required_slots:
@@ -105,7 +105,10 @@ responses:
   - text: What is the date?
   utter_submit:
   - text: Ok. Thanks!
-
+  utter_thank:
+    - text: Have a great day!
+  utter_restart:
+    - text: Hi! how can I help you?
 actions:
   - utter_cancellation
   - action_cancel_appointment
@@ -117,6 +120,8 @@ actions:
   - action_check_available_doctors_given_speciality
   - action_book_doctor
   - utter_list_hospital_services
+  - action_restart
+  - utter_restart
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

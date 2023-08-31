@@ -37,7 +37,7 @@ stories:
     - action: doctor_name_date_form
     - active_loop: doctor_name_date_form
     - active_loop: null
-    - action: utter_slots_values
+    #- action: utter_slots_values
     - action: action_check_doctor_availability
     - intent: affirm
 
@@ -75,10 +75,12 @@ stories:
     - action: doctor_name_date_form
     - active_loop: doctor_name_date_form
     - active_loop: null
-    - action: utter_slots_values
+    #- action: utter_slots_values
     - action: action_check_doctor_availability
     - intent: confirm_booking
     - action: action_book_doctor
+    - intent: deny
+    - action: utter_thank
 
 - story: cancel_appointment
   steps:
@@ -92,6 +94,9 @@ stories:
     - action: utter_cancellation
     - intent: confirm_appointment_cancellation
     - action: action_cancel_appointment
+    - intent: restart_chat
+    - action: action_restart
+
 - story: interactive_story_1
   steps:
   - intent: greet
@@ -116,3 +121,10 @@ stories:
     entities:
     - confirm_cancellation: confirm
   - action: action_cancel_appointment
+
+- story: restart_chat
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - intent: restart_chat
+    - action: action_restart

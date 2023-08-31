@@ -4,6 +4,7 @@ nlu:
   examples: |
     - hey
     - hello
+    - welcome
     - hi
     - hello there
     - good morning
@@ -144,9 +145,9 @@ nlu:
     - What's the procedure for booking appointments?
 - intent: confirm_booking
   examples: |
-    - Yes I [confirm booking](confirm).
-    - [Confirm booking](confirm).
-    - Yes I [confirm booking](confirm) booking
+    - Yes I [confirm the booking](confirm).
+    - [Confirm the booking](confirm).
+    - Yes I [confirm the booking](confirm)
 - intent: cancel_appointment
   examples: |
     - I need to cancel my appointment.
@@ -181,3 +182,10 @@ nlu:
     - 2022-4-06
     - 2023-12-4
     - 2019-3-31
+
+- intent: restart_chat
+  examples: |
+    - restart
+    - Restart
+    - start again
+    - start new chat
