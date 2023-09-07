@@ -31,9 +31,9 @@ class Patient(models.Model):
     def __str__(self):
         return f"{self.userID} : {self.first_name} {self.last_name}"
 
-class Bookings(models.Model):
+class Booking(models.Model):
     appointment_ID = models.AutoField(primary_key=True)
-    patient = models.ForeignKey(Patient,on_delete=models.PROTECT)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     day = models.DateField()
     book = models.BooleanField()

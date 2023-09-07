@@ -82,7 +82,7 @@ DATABASES = {
     #}
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'medibot',
+        'NAME': 'medibot1.0',
         'USER': 'root',
         'PASSWORD': '181522',
         'HOST':'localhost',

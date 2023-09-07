@@ -72,7 +72,7 @@ class action_check_doctor_availability(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        doctor_name = tracker.get_slot("doctor_name")
+        doctor_name = tracker.get_slot("doctor_name").lower()
         day = tracker.get_slot("date")
 
         # Connect to the MySQL database
@@ -80,7 +80,7 @@ class action_check_doctor_availability(Action):
              host='localhost',
              user='root',
              password='181522',
-             database='medibot'
+             database='medibot1.0'
          )
         cursor = conn.cursor()
 
@@ -116,7 +116,7 @@ class action_get_doctors_available_onDate(Action):
                 host='localhost',
                 user='root',
                 password='181522',
-                database='medibot'
+                database='medibot1.0'
             )
             cursor = conn.cursor()
 
@@ -158,7 +158,7 @@ class action_get_dates_available_given_Name(Action):
                         host='localhost',
                         user='root',
                         password='181522',
-                        database='medibot'
+                        database='medibot1.0'
                 ) as conn:
                     with conn.cursor() as cursor:
                         # Execute the SQL query to get available dates for the given doctor
@@ -197,7 +197,7 @@ class action_check_available_doctors_given_speciality(Action):
                         host='localhost',
                         user='root',
                         password='181522',
-                        database='medibot'
+                        database='medibot1.0'
                 ) as conn:
                     with conn.cursor() as cursor:
                         # Execute the SQL query to get available specialties
@@ -226,7 +226,8 @@ class action_book_doctor(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         doctor_name = next(tracker.get_latest_entity_values("doctor_name"), None)
         date = next(tracker.get_latest_entity_values("date"), None)
-        doctor_name = tracker.get_slot("doctor_name")
+        patient_id = 1 # Change later
+        doctor_name = tracker.get_slot("doctor_name").lower()
         date = tracker.get_slot("date")
         confirm = next(tracker.get_latest_entity_values("confirm"), None)
 
@@ -237,7 +238,7 @@ class action_book_doctor(Action):
                         host='localhost',
                         user='root',
                         password='181522',
-                        database='medibot'
+                        database='medibot1.0'
                 ) as conn:
                     cursor = conn.cursor()
 
@@ -250,8 +251,8 @@ class action_book_doctor(Action):
                         doctor_id = id_result[0]
 
                         # Execute the SQL query to book the doctor
-                        query = "INSERT INTO medibot_bookings (day, book, doctor_id) VALUES (%s, %s, %s)"
-                        cursor.execute(query, (date, 1, doctor_id))
+                        query = "INSERT INTO medibot_booking (day, book, doctor_id, patient_id) VALUES (%s, %s, %s, %s)"
+                        cursor.execute(query, (date, 1, doctor_id, patient_id))
 
                         conn.commit()  # Commit the transaction
 
@@ -277,7 +278,7 @@ class action_cancel_appointment(Action):
                 d.doctor_name,
                 b.day
             FROM
-                medibot_bookings AS b
+                medibot_booking AS b
             JOIN
                 medibot_doctor AS d ON b.doctor_id = d.doctor_id
             WHERE
@@ -296,7 +297,7 @@ class action_cancel_appointment(Action):
                         host='localhost',
                         user='root',
                         password='181522',
-                        database='medibot'
+                        database='medibot1.0'
                 ) as conn:
                     cursor = conn.cursor()
 
@@ -305,7 +306,7 @@ class action_cancel_appointment(Action):
                     if appointment_info:
                         doctor_name, date = appointment_info
 
-                        query = "UPDATE medibot_bookings SET book = 0 WHERE appointment_ID = %s"
+                        query = "UPDATE medibot_booking SET book = 0 WHERE appointment_ID = %s"
                         cursor.execute(query, (appointment_ID,))
                         conn.commit()
 
