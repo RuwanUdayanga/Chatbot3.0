@@ -60,7 +60,7 @@ class ActionWelcome(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        dispatcher.utter_message(text="Hello! how can I help you? ")
+        dispatcher.utter_message(text="ආයුබෝවන්! මම ඔබට උදව් කරන්නේ කෙසේ ද?")
 
         return []
 class action_check_doctor_availability(Action):
@@ -93,9 +93,9 @@ class action_check_doctor_availability(Action):
         conn.close()
 
         if result and result[0] == 1:
-            message = f"{doctor_name} is available on {day}. Do you want to make a booking? If yes type 'Yes I confirm the booking'."
+            message = f"වෛද්‍ය {doctor_name}, {day} දින වෙන්කරවා ගත හැක. ඔබට වෙන් කිරීමක් කිරීමට අවශ්‍යද? ඔව් නම්, 'ඔව් මම වෙන්කරවා ගැනීම තහවුරු කරමි' ටයිප් කරන්න"
         else:
-            message = f"{doctor_name} is not available on {day}."
+            message = f"වෛද්‍ය {doctor_name}, {day} දින වෙන්කරවා ගත නොහැක"
 
         # Send the response back to the user
         dispatcher.utter_message(text=message)
@@ -134,11 +134,11 @@ class action_get_doctors_available_onDate(Action):
             conn.close()
 
             if doctor_names:
-                dispatcher.utter_message(f"Doctors available on {date_entity}: {', '.join(doctor_names)}")
+                dispatcher.utter_message(f"{date_entity} දින ලබා ගත හැකි වෛද්‍යවරුන් : {', '.join(doctor_names)}")
             else:
-                dispatcher.utter_message(f"No doctors available on {date_entity}")
+                dispatcher.utter_message(f"{date_entity} දින වෙන්කරවා ගත හැකි වෛද්‍යවරුන් නොමැත")
         else:
-            dispatcher.utter_message("I couldn't understand the date. Please provide a valid date.")
+            dispatcher.utter_message("මට දිනය තේරුම් ගත නොහැකි විය. කරුණාකර වලංගු දිනයක් ලබා දෙන්න")
 
         return []
 
@@ -180,7 +180,7 @@ class action_get_dates_available_given_Name(Action):
                 print("Error:", err)
                 dispatcher.utter_message("An error occurred while fetching data.")
         else:
-            dispatcher.utter_message("I couldn't understand the name. Please provide a valid name.")
+            dispatcher.utter_message("කරුණාකර වලංගු නමක් සපයන්න.")
 
         return []
 
@@ -208,9 +208,9 @@ class action_check_available_doctors_given_speciality(Action):
                         specialties = [row[0] for row in cursor.fetchall()]
 
                 if specialties:
-                    response = "The available specialties are: {}".format(", ".join(specialties))
+                    response = "සිටින විශේෂඥ වෛද්‍යවරුන්: {}".format(", ".join(specialties))
                 else:
-                    response = "No specialties found in the database."
+                    response = "සමාවන්න, රෝහලේ ඒ ක්ෂේත්‍රයට අදාල විශේෂඥ වෛද්‍යවරු නොමැත"
 
                 dispatcher.utter_message(response)
             except mysql.connector.Error as err:
@@ -255,11 +255,11 @@ class action_book_doctor(Action):
 
                         conn.commit()  # Commit the transaction
 
-                        message = (f"Booking {doctor_name} on {date}. Booking successful! \n Do you need any other service? "
+                        message = (f"{date} දින වෛද්‍ය {doctor_name} වෙන්කරවා ගැනීම සාර්ථකයි! \n ඔබට වෙනත් සේවාවක් අවශ්‍යද?"
                                    f"")
                         dispatcher.utter_message(message)
                     else:
-                        response = f"{doctor_name} is not available."
+                        response = f"සමාවන්න, වෛද්‍ය {doctor_name} {date} දින වෙන්කරවා ගත නොහැකියි"
                         dispatcher.utter_message(response)
 
             except mysql.connector.Error as err:
@@ -309,10 +309,10 @@ class action_cancel_appointment(Action):
                         cursor.execute(query, (appointment_ID,))
                         conn.commit()
 
-                        message = f"Cancelling appointment with {doctor_name} on {date}. Appointment cancelled!"
+                        message = f"{date} දින වෛද්‍ය {doctor_name} සමඟ හමුවීම අවලංගු කිරීම සාර්ථකයි!"
                         dispatcher.utter_message(message)
                     else:
-                        response = "Appointment not available."
+                        response = "ලබා දී ඇති තොරතුරු සඳහා වෙන්කරවා ගැනීමක් නැත"
                         dispatcher.utter_message(response)
 
             except mysql.connector.Error as err:
@@ -330,6 +330,28 @@ class  ActionRestart(Action):
   ) -> List[Dict[Text, Any]]:
 
       # custom behavior
-      response = "Hi! how can I help you?"
+      response = "ආයුබෝවන්! මම ඔබට උදව් කරන්නේ කෙසේ ද?"
       dispatcher.utter_message(response)
       return [Restarted()]
+  class ActionRestartWithoutMessage(Action):
+      def name(self) -> Text:
+          return "action_restart_without_message"
+
+      async def run(
+              self, dispatcher, tracker: Tracker, domain: Dict[Text, Any]
+      ) -> List[Dict[Text, Any]]:
+          # custom behavior
+
+          return [Restarted()]
+
+class ActionRestartWithThank(Action):
+    def name(self) -> Text:
+        return "action_restart_with_thank"
+
+    async def run(
+            self, dispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        # custom behavior
+        response = "සුභ දිනයක් වේවා!"
+        dispatcher.utter_message(response)
+        return [Restarted()]

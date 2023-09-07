@@ -9,25 +9,25 @@ stories:
   - intent: mood_great
   - action: utter_happy
 
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
+#- story: sad path 1
+#  steps:
+#  - intent: greet
+#  - action: utter_greet
+#  - intent: mood_unhappy
+#  - action: utter_cheer_up
+#  - action: utter_did_that_help
+#  - intent: affirm
+#  - action: utter_happy
 
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+#- story: sad path 2
+#  steps:
+#  - intent: greet
+#  - action: utter_greet
+#  - intent: mood_unhappy
+#  - action: utter_cheer_up
+#  - action: utter_did_that_help
+#  - intent: deny
+#  - action: utter_goodbye
 
 - story: check_doctor_availability
   steps:
@@ -39,7 +39,6 @@ stories:
     - active_loop: null
     #- action: utter_slots_values
     - action: action_check_doctor_availability
-    - intent: affirm
 
 - story: user asks for available doctors on a specific date
   steps:
@@ -80,7 +79,7 @@ stories:
     - intent: confirm_booking
     - action: action_book_doctor
     - intent: deny
-    - action: utter_thank
+    - action: action_restart_with_thank
 
 - story: cancel_appointment
   steps:
@@ -128,3 +127,64 @@ stories:
     - action: utter_greet
     - intent: restart_chat
     - action: action_restart
+
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: check_available_doctors_given_date
+    entities:
+    - date: '2023-08-15'
+  - action: action_get_doctors_available_onDate
+  - intent: check_available_doctors_given_date
+    entities:
+    - date: '2023-08-14'
+  - action: action_get_doctors_available_onDate
+
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: check_available_doctors_given_speciality
+    entities:
+    - speciality: dermatologist
+  - action: action_check_available_doctors_given_speciality
+  - intent: check_available_doctors_given_speciality
+    entities:
+    - speciality: Pediatrician
+  - action: action_check_available_doctors_given_speciality
+  - intent: nlu_fallback
+    entities:
+    - doctor_name: Dr.Smith
+  - intent: add_booking_initial
+    entities:
+    - doctor_name: Dr.Smith
+  - action: doctor_name_date_form
+  - active_loop: doctor_name_date_form
+  - slot_was_set:
+    - requested_slot: doctor_name
+  - intent: provide_doctor_name
+    entities:
+    - doctor_name: Dr.Smith
+  - slot_was_set:
+    - doctor_name: Dr.Smith
+  - action: doctor_name_date_form
+  - slot_was_set:
+    - requested_slot: date
+  - intent: provide_date
+    entities:
+    - date: '2023-08-23'
+  - slot_was_set:
+    - date: '2023-08-23'
+  - action: doctor_name_date_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_check_doctor_availability
+  - intent: confirm_booking
+    entities:
+    - confirm: confirm the booking
+  - action: action_book_doctor
+  - intent: deny
+  - action: action_restart_with_thank

@@ -97,13 +97,15 @@ nlu:
     - Tell me which doctors have appointments available.
 - intent: check_available_doctors_given_date
   examples: |
-    - Who are the available doctors on [12-10-2020](date)?
-    - Can you tell me which doctors are free on [03-5-2021](date)?
-    - I'm looking for doctors available on [31-8-2023](date). Any recommendations?
+    - Who are the available doctors on [2020-09-10](date)?
+    - Can you tell me which doctors are free on [2021-08-31](date)?
+    - I'm looking for doctors available on [2023-09-08](date). Any recommendations?
     - Are there any doctors with open slots on [2022-06-07](date)?
     - Which doctors can I see on [2021-4-29](date)?
-    - Show me doctors who have appointments available on [04-08-2024](date).
-    - Tell me about available doctors for [29-12-2022](date).
+    - Show me doctors who have appointments available on [2021-09-08](date).
+    - Tell me about available doctors for [2020-07-06](date).
+    - Who are the available doctors on [2023-08-15](date)
+    - Who are the available doctors on [2023-08-14](date)
 - intent: check_available_dates_given_doctor
   examples: |
     - When is [Dr.Kamal](doctor_name) available next?
@@ -125,12 +127,15 @@ nlu:
     - Who are the available doctors for [Rheumatology](speciality) treatment?
     - I need to find [Cardiologist](speciality) doctors available for an appointment.
     - Who are the [ENT](speciality) specialists available?
+    - Who are the doctors specialised in [detmotology](speciality)
+    - Can you recommend a [dermatologist](speciality)?
+    - Can you recommend a [dermatologist](speciality)?
+    - Can you recommend a [pediatrician]{"entity": "speciality", "value": "Pediatrician"}?
 - intent: asking_hospital_location
   examples: |
     - Where is the hospital located?
     - Can you tell me the address of the hospital?
     - What's the location of the hospital?
-    - Where can I find the hospital?
 - intent: add_booking_initial
   examples: |
     - I need to book a doctor.
@@ -143,10 +148,12 @@ nlu:
     - Can you guide me through the process of booking an appointment?
     - How do I reserve a time to see a doctor?
     - What's the procedure for booking appointments?
+    - Can I channel [Dr.Smith](doctor_name)
 - intent: confirm_booking
   examples: |
     - Yes I [confirm the booking](confirm).
     - [Confirm the booking](confirm).
+    - Yes I [confirm the booking](confirm)
     - Yes I [confirm the booking](confirm)
 - intent: cancel_appointment
   examples: |
@@ -169,20 +176,21 @@ nlu:
     - Yes I confirm appointment [cancellation](confirm_cancellation).
     - Confirm appointment [cancellation](confirm_cancellation).
     - Yes I confirm appointment [cancellation](confirm_cancellation)
-
 - intent: provide_doctor_name
   examples: |
     - Dr.Johnson
-    - Dr.Smith
-    - Peter
-    - Ann
+    - Dr.Johnson Susan
+    - Dr.Smith Nizzan
+    - Peter Harizon
+    - Ann Jane
+    - [Dr.Smith](doctor_name)
 - intent: provide_date
   examples: |
     - 2021-01-05
     - 2022-4-06
     - 2023-12-4
     - 2019-3-31
-
+    - [2023-08-23](date)
 - intent: restart_chat
   examples: |
     - restart

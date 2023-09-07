@@ -1,16 +1,16 @@
 version: '3.1'
 entities:
+- doctor_name
+- speciality
+- confirm
+- date
 - appointment_ID
 - confirm_cancellation
-- doctor_name
-- date
 - time
 - department
 - symptom
-- speciality
 - patient_relation
 - facility
-- confirm
 - doctor_available
 intents:
 - add_booking_initial
@@ -79,49 +79,51 @@ slots:
         requested_slot: appointment_ID
 responses:
   utter_greet:
-  - text: Hello! how can I help you?
-  utter_cheer_up:
-  - text: 'Here is something to cheer you up:'
-    image: https://i.imgur.com/nGF1K8f.jpg
-  utter_did_that_help:
-  - text: Did that help you?
+  - text: "ආයුබෝවන්! ඔබට දැනගත යුතු යමක් තිබේද?"
+#  utter_cheer_up:
+#  - text: 'Here is something to cheer you up:'
+#    image: https://i.imgur.com/nGF1K8f.jpg
+#  utter_did_that_help:
+#  - text: Did that help you?
   utter_happy:
-  - text: Great, carry on!
+  - text: මට තව විස්තර කියන්න
   utter_goodbye:
-  - text: Bye
+  - text: නැවත හමුවෙමු
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+  - text: මම රොබෝ කෙනෙක්
   utter_slots_values:
-  - text: Checking {doctor_name} on {date}!
+  - text: වෛද්‍ය {doctor_name}, {day} දින පරීක්ෂා කරමින්!
   utter_hospital_location:
-  - text: MediCare Hospitals PLC, Colombo 7, Sri Lanka
+  - text: මෙඩිකෙයා රෝහල, කොළඹ 7, ශ්‍රී ලංකාව
   utter_ask_appointment_details:
-  - text: Can you tell me the appointment ID?
+  - text: ඔබට හමුවීම් අංකය මට කියන්න පුළුවන්ද?
   utter_cancellation:
-  - text: "Do you really want cancel booking ID={appointment_ID} ! If yes type 'Yes I confirm appointment cancellation' "
+  - text: ඔබට ඇත්තටම ID={appointment_ID} හමුවීම් වෙන්කරවා ගැනීම අවලංගු කිරීමට අවශ්‍යද! ඔව් නම්, 'ඔව් මම හමුවීම් අවලංගු කිරීම තහවුරු කරමි' ටයිප් කරන්න
   utter_ask_doctor_name:
-  - text: What is the doctor name?
+  - text: ඔබට හමුවීමට අවශ්‍ය වෛද්‍යවරයාගේ නම කුමක්ද?
   utter_ask_date:
-  - text: What is the date?
+  - text: ඔබට වෛද්‍යවරයා හමුවීමට අවශ්‍ය දිනය කුමක්ද?
   utter_submit:
-  - text: Ok. Thanks!
+  - text: ස්තුතියි!
   utter_thank:
-    - text: Have a great day!
+  - text: සුභ දිනයක් වේවා!
   utter_restart:
-    - text: Hi! how can I help you?
+  - text: ආයුබෝවන්! මම ඔබට උදව් කරන්නේ කෙසේ ද?
 actions:
+  - utter_greet
+  - action_check_doctor_availability
+  - action_book_doctor
+  - action_restart_with_thank
+  - action_check_available_doctors_given_speciality
+  - action_get_doctors_available_onDate
   - utter_cancellation
   - action_cancel_appointment
   - utter_ask_appointment_details
-  - utter_greet
-  - action_check_doctor_availability
-  - action_get_doctors_available_onDate
   - action_get_dates_available_given_Name
-  - action_check_available_doctors_given_speciality
-  - action_book_doctor
   - utter_list_hospital_services
   - action_restart
   - utter_restart
+  - action_restart_without_message
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

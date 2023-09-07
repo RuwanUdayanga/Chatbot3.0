@@ -13,6 +13,10 @@
 action_endpoint:
   url: "http://localhost:5055/webhook"
 
+output_channels:
+  - name: custom_translate
+    class: "translation_sinhala_middleware.py.TranslateResponseMiddleware"
+    output_channel: rasa.core.channels.socket.SocketIOOutput
 #actions:
 #  - action_check_doctor_availability:
 #    url: http://localhost:5005/action/action_check_doctor_availability

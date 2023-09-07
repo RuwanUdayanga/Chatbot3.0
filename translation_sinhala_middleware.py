@@ -30,14 +30,30 @@
 #             translated_messages.append(translated_message)
 #         return translated_messages
 
+# from googletrans import Translator
+# translator = Translator()
+# import sys
+# import json
+# import ast
+#
+# input = sys.argv[1]
+# output = translator.translate(input, src="auto", dest='en')
+# print(output)
+#
+# sys.stdout.flush()
+
+from rasa.core.channels import OutputChannel
 from googletrans import Translator
-translator = Translator()
-import sys
-import json
-import ast
 
-input = sys.argv[1]
-output = translator.translate(input, src="auto", dest='en')
-print(output)
+class TranslateResponseMiddleware(OutputChannel):
+    def __init__(self, output_channel):
+        self.translator = Translator()
+        self.output_channel = output_channel
 
-sys.stdout.flush()
+    async def send_response(self, recipient_id, message):
+        # Translate the message using googletrans
+        print(message)
+        translated_message = self.translator.translate(message,src="auto", dest='si').text
+
+        # Send the translated message to the user using the specified output channel
+        await self.output_channel.send_response(recipient_id, translated_message)

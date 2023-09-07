@@ -89,3 +89,144 @@ stories:
       are you a bot?
     intent: bot_challenge
   - action: utter_iamabot
+
+- story: check_doctor_availability
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        Can you check if a doctor is available on August 15th?
+      intent: check_doctor_availability
+    - action: doctor_name_date_form
+    - active_loop: doctor_name_date_form
+    - active_loop: null
+    - action: action_check_doctor_availability
+
+- story: user asks for available doctors on a specific date
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        Which doctors are available on August 15th?
+      intent: check_available_doctors_given_date
+    - action: action_get_doctors_available_onDate
+
+- story: user asks for available dates given doctor name
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        Which dates is Dr. Smith available?
+      intent: check_available_dates_given_doctor
+    - action: action_get_dates_available_given_Name
+
+- story: User wants to check available doctors in a specific specialty
+  steps:
+  - user: |
+      hi there!
+    intent: greet
+  - action: utter_greet
+  - user: |
+      Which doctors specialize in cardiology?
+    intent: check_available_doctors_given_speciality
+  - action: action_check_available_doctors_given_speciality
+
+- story: user asks about hospital location
+  steps:
+    - user: |
+        Where is the hospital located?
+      intent: asking_hospital_location
+    - action: utter_hospital_location
+
+- story: booking_process
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        I want to book an appointment.
+      intent: add_booking_initial
+    - action: doctor_name_date_form
+    - active_loop: doctor_name_date_form
+    - active_loop: null
+    - action: action_check_doctor_availability
+    - user: |
+        Yes, please book the appointment.
+      intent: confirm_booking
+    - action: action_book_doctor
+    - user: |
+        No, I changed my mind.
+      intent: deny
+    - action: action_restart_with_thank
+
+- story: cancel_appointment
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        I want to cancel my appointment.
+      intent: cancel_appointment
+    - action: utter_ask_appointment_details
+    - action: appointment_ID_form
+    - active_loop: appointment_ID_form
+    - active_loop: null
+    - action: utter_cancellation
+    - user: |
+        Yes, please cancel it.
+      intent: confirm_appointment_cancellation
+    - action: action_cancel_appointment
+    - intent: restart_chat
+    - action: action_restart
+
+- story: restart_chat
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        Let's start over.
+      intent: restart_chat
+    - action: action_restart
+
+- story: interactive_story_1
+  steps:
+    - user: |
+        hi there!
+      intent: greet
+    - action: utter_greet
+    - user: |
+        I want to cancel my appointment.
+      intent: cancel_appointment
+    - action: utter_ask_appointment_details
+    - action: appointment_ID_form
+    - active_loop: appointment_ID_form
+    - slot_was_set:
+      - requested_slot: appointment_ID
+    - user: |
+        My appointment ID is 3.
+      intent: give_appointment_ID
+      entities:
+      - appointment_ID: '3'
+    - slot_was_set:
+      - appointment_ID: '3'
+    - action: appointment_ID_form
+    - slot_was_set:
+      - requested_slot: null
+    - active_loop: null
+    - action: utter_cancellation
+    - user: |
+        Yes, please cancel it.
+      intent: confirm_appointment_cancellation
+      entities:
+      - confirm_cancellation: confirm
+    - action: action_cancel_appointment
