@@ -52,7 +52,7 @@ class TranslateResponseMiddleware(OutputChannel):
 
     async def send_response(self, recipient_id, message):
         # Translate the message using googletrans
-        print(message)
+
         translated_message = self.translator.translate(message,src="auto", dest='si').text
 
         # Send the translated message to the user using the specified output channel

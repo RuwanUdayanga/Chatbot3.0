@@ -35,7 +35,7 @@ body {
 
 .chats {
   /* display: none; */
-  height: 400px;
+  height: 500px;
   padding: 2px;
   border-radius: 1px;
   overflow-y: scroll;
@@ -52,7 +52,7 @@ div.chats::-webkit-scrollbar {
 }
 
 .clearfix {
-  margin-top: 15px;
+  margin-top: 5px;
   margin-bottom: 5px;
 }
 

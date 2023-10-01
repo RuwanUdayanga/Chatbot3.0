@@ -7,60 +7,48 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
+- rule: Greet any time user greets
+  steps:
+    - intent: greet
+    - action: utter_greet
+
 - rule: Say 'I am a bot' anytime the user challenges
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Activate form
+- rule: If check availability today run action
   steps:
-  - intent: check_doctor_availability
-  - action: doctor_name_date_form
-  - active_loop: doctor_name_date_form
+    - intent: check_doctors_available_today
+    - action: action_check_doctors_available_today_tomorrow
 
-- rule: Submit form
-  condition:
-  - active_loop: doctor_name_date_form
+- rule: If check availability tomorrow run action
   steps:
-  - action: doctor_name_date_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  #- action: utter_slots_values
-  - action: action_check_doctor_availability
+    - intent: check_doctors_available_tomorrow
+    - action: action_check_doctors_available_today_tomorrow
 
-- rule: Book_doctor
+- rule: If add booking initial
+  steps:
+    - intent: provide_doctor_name
+    - action: action_get_dates_available_given_Name
+
+- rule: If give date ask confirmation
+  steps:
+    - intent: provide_date
+    - action: action_get_channel_confirmation
+
+- rule: check available doctors given speciality
+  steps:
+  - intent: check_available_doctors_given_speciality
+  - action: action_check_available_doctors_given_speciality
+
+- rule: If ask other service
+  steps:
+    - intent: get_another_service
+    - action: action_ask_other_services
+
+- rule: If confirm book
   steps:
     - intent: confirm_booking
     - action: action_book_doctor
-
-#- rule: Submit form
-#  condition:
-#  - active_loop: doctor_name_date_form
-#  steps:
-#  - action: doctor_name_date_form
-#  - active_loop: null
-#  - slot_was_set:
-#    - requested_slot: null
-#  #- action: utter_slots_values
-#  - action: action_check_doctor_availability
-
-- rule: cancel_form
-  condition:
-    - active_loop: appointment_ID_form
-  steps:
-    - action: appointment_ID_form
-    - active_loop: null
-    - slot_was_set:
-        - requested_slot: null
-    - action: utter_cancellation
-
-- rule: cqncel_appointment
-  steps:
-    - intent: confirm_appointment_cancellation
-    - action: action_cancel_appointment
-
-- rule: restart_chat
-  steps:
-    - intent: restart_chat
-    - action: action_restart
+    - action: action_ask_other_services

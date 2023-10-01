@@ -32,6 +32,7 @@ nlu:
   examples: |
     - yes
     - y
+    - yep
     - indeed
     - of course
     - that sounds good
@@ -45,56 +46,20 @@ nlu:
     - don't like that
     - no way
     - not really
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
-- intent: check_doctor_availability
+- intent: check_doctors_available_today
   examples: |
-    - Can you help me find an available doctor?
-    - I'm looking to see if there are any doctors available.
-    - Can you assist me in checking doctor availability?
-    - How can I find out if there are any doctors open for appointments?
-    - Is it possible to know if there are doctors I can see right now?
-    - I need to know if there are any doctors with open slots.
-    - Are there any available doctors for consultation?
-    - Can you provide me with information about doctors who are available?
-    - I want to book a doctor's appointment. Who's available?
-    - Tell me which doctors have appointments available.
+    - Who are the available doctors [today](day)?
+    - Who are the doctors I can channel [today](day)?
+- intent: check_doctors_available_tomorrow
+  examples: |
+    - Who are the available doctors [tomorrow](day)?
+    - Who are the doctors I can channel [tomorrow](day)?
 - intent: check_available_doctors_given_date
   examples: |
     - Who are the available doctors on [2020-09-10](date)?
@@ -129,7 +94,6 @@ nlu:
     - Who are the [ENT](speciality) specialists available?
     - Who are the doctors specialised in [detmotology](speciality)
     - Can you recommend a [dermatologist](speciality)?
-    - Can you recommend a [dermatologist](speciality)?
     - Can you recommend a [pediatrician]{"entity": "speciality", "value": "Pediatrician"}?
 - intent: asking_hospital_location
   examples: |
@@ -148,13 +112,18 @@ nlu:
     - Can you guide me through the process of booking an appointment?
     - How do I reserve a time to see a doctor?
     - What's the procedure for booking appointments?
-    - Can I channel [Dr.Smith](doctor_name)
+    - Can you help me find a doctor?
+    - Can you assist me in checking doctor availability?
+    - I'm looking for information on doctor availability.
+    - I need to make a appointment.
 - intent: confirm_booking
   examples: |
-    - Yes I [confirm the booking](confirm).
-    - [Confirm the booking](confirm).
-    - Yes I [confirm the booking](confirm)
-    - Yes I [confirm the booking](confirm)
+    - Yes I [confirm](confirm_booking) the booking.
+    - [Confirm](confirm_booking) the booking.
+- intent: deny_booking
+  examples: |
+    - No I [deny](confirm_booking).
+    - [Deny](confirm_booking) the booking.
 - intent: cancel_appointment
   examples: |
     - I need to cancel my appointment.
@@ -171,29 +140,40 @@ nlu:
     - [12](appointment_ID)
     - appointment id is [5](appointment_ID)
     - [3](appointment_ID)
+    - [6](appointment_ID)
+    - [5](appointment_ID)
 - intent: confirm_appointment_cancellation
   examples: |
-    - Yes I confirm appointment [cancellation](confirm_cancellation).
-    - Confirm appointment [cancellation](confirm_cancellation).
-    - Yes I confirm appointment [cancellation](confirm_cancellation)
+    - confirm [cancellation](confirm_cancellation).
+    - Confirm [cancellation](confirm_cancellation).
+
 - intent: provide_doctor_name
   examples: |
-    - Dr.Johnson
-    - Dr.Johnson Susan
-    - Dr.Smith Nizzan
-    - Peter Harizon
-    - Ann Jane
-    - [Dr.Smith](doctor_name)
+    - Doctor [Johnson](doctor_name)
+    - doctor [Smith](doctor_name)
+    - doctor [Peter](doctor_name)
+    - Doctor [Saman](doctor_name)
 - intent: provide_date
   examples: |
-    - 2021-01-05
-    - 2022-4-06
-    - 2023-12-4
-    - 2019-3-31
+    - [2021-01-05](date)
+    - [2022-04-06](date)
+    - [2023-12-4](date)
+    - [2019-3-31](date)
     - [2023-08-23](date)
-- intent: restart_chat
+- intent: get_another_service
   examples: |
-    - restart
-    - Restart
-    - start again
-    - start new chat
+    - get another service
+    - I need another service
+- intent: give_speciality
+  examples: |
+    - [Pediatrician](speciality)
+    - [Dermatologist](speciality)
+    - [Cardiologist](speciality)
+    - [radiologist](speciality)
+- intent: check_available_specialists
+  examples: |
+    - I need to check for available specialists
+    - search specialists
+- synonym: Pediatrician
+  examples: |
+    - pediatrician
